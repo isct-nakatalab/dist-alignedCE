@@ -1,27 +1,8 @@
-import sys
 import numpy as np
-import pandas as pd
-import pickle as pk
-import time
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import train_test_split
-from sklearn.neighbors import KernelDensity
 import matplotlib.pyplot as plt
-from sklearn.neighbors import LocalOutlierFactor
-from sklearn.linear_model import LogisticRegression
-import pandas as pd
-import random
-from sklearn.preprocessing import StandardScaler
-from pathlib import Path
-import pickle
-import time
-import math
-from sklearn.neighbors import RadiusNeighborsTransformer
 from preprocess import preprocess_artificial, learn_logistic_regression
 from CE.method.Dist_aligned import DistAlighedCE
 from CE.method.FACE import FACE
-from utils import original_make, get_candidates_bad, worst_lof
-from tqdm import tqdm
 
 def main():
     target_data, all_data, label, data_label_0, data_label_1 = preprocess_artificial()
