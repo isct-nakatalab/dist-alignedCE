@@ -8,6 +8,7 @@ from sklearn.linear_model import LogisticRegression
 import time
 import math
 from tqdm import tqdm
+import copy
 
 def get_candidates_lof(tp, all_data, clf):
     candidates = []
@@ -31,6 +32,7 @@ class DistAlighedCE:
             k: int = 10,
             k_dash: int = 5,
             neighbor: int = 10,
+            activate_name: str = "exp"
             ):
         self.data = data
         self.clf = clf
@@ -44,6 +46,7 @@ class DistAlighedCE:
         self.iterations = iterations
         self.dist_weight = dist_weight
         self.neighbor = neighbor
+        self.activate_name = activate_name
         self.target_data = np.array(get_candidates_lof(self.tp, self.data, self.clf))
         self.Flof = LocalOutlierFactor(n_neighbors=self.k,novelty = True)
         self.Flof.fit(self.target_data)
@@ -51,36 +54,42 @@ class DistAlighedCE:
         self.Alof.fit(self.data)
 
     def calc_cost(self, perturbation_vector: np.ndarray):
-        return -self.Flof.score_samples(perturbation_vector)*self.gamma -math.exp(self.Flof.score_samples(perturbation_vector))*self.eta
+        if self.activate_name == "normal":
+            return -self.Flof.score_samples(perturbation_vector)*self.gamma -self.Alof.score_samples(perturbation_vector)*self.eta
+        elif self.activate_name == "exp":
+            return -self.Flof.score_samples(perturbation_vector)*self.gamma -np.exp(self.Alof.score_samples(perturbation_vector))*self.eta
 
     def calc_grad(self, perturbation_vector: np.ndarray):
         p_score = self.calc_cost(perturbation_vector)
-        p_nei = self.Alof(perturbation_vector,self.neighbor)
-        nei_X = []
-        nei_lof = []
-        for i in range(self.neighbor):
-            nei_X.append((self.data[p_nei[0][i]] - perturbation_vector)[0])
-            nei_lof.append(self.calc_cost([self.data[p_nei[0][i]]]) - p_score)
-        nei_X = np.array(nei_X)
-        nei_lof = np.array(nei_lof)
-        return  (-np.linalg.inv(nei_X.T.dot(nei_X)+self.alpha*np.eye(len(nei_X[0]))).dot(nei_X.T).dot(nei_lof)).reshape(1,-1)
+        p_nei = self.Alof.kneighbors(perturbation_vector, n_neighbors=self.neighbor ,return_distance=False)
+        nei_X = ((self.data[p_nei[0]] - perturbation_vector))
+        nei_lof = (self.calc_cost(self.data[p_nei[0,:]]) - p_score)
+        return  (-np.linalg.inv(nei_X.T.dot(nei_X)+self.lambdas*np.eye(nei_X.shape[1])).dot(nei_X.T).dot(nei_lof)).reshape(1,-1)
 
     def calc_dist_grad(self, input, perturbation_vector):
         return -(perturbation_vector-input)*self.dist_weight
 
-    def alighed_ce(self, input):
+    def alighed_ce(self, input, name = None):
         start_time = time.time()
         pointlist = []
 
-        perturbation_vector = input
+        perturbation_vector = copy.deepcopy(input)
 
         for i in tqdm(range(1,self.iterations),desc="alighed_ce"):
 
-            if i%50 == 0: #get path-point
-                pointlist.append(perturbation_vector)
+            if name == "artificial":
+                    if len(pointlist) == 0:
+                        if np.linalg.norm(perturbation_vector-input,2)>=0.15:
+                            pointlist.append(copy.deepcopy(perturbation_vector))
+                    elif len(pointlist) > 0:
+                        if np.linalg.norm(pointlist[len(pointlist)-1]-perturbation_vector,2) >= 0.15:
+                            pointlist.append(copy.deepcopy(perturbation_vector))
+            else:
+                if i%50 == 0: #get path-point
+                    pointlist.append(perturbation_vector)
 
             grad = self.calc_dist_grad(input, perturbation_vector) + self.calc_grad(perturbation_vector)
-            #updata
+            # #updata
             perturbation_vector += self.beta*grad
 
         end_time = time.time()

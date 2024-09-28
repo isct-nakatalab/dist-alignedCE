@@ -6,6 +6,36 @@ import random
 from sklearn.preprocessing import StandardScaler
 from xgboost import XGBClassifier
 
+def preprocess_artificial():
+
+    num0 = 150 #0の点の数
+    num1 = 50
+    fseed = 10
+
+    # ラベル0の点を生成
+    label_0_points = num0
+    np.random.seed(seed = 501)
+    x_label_0 = np.linspace(0, 4, label_0_points)+ np.random.normal(0, 0.1, label_0_points)
+    np.random.seed(seed = fseed+4)
+    y_label_0 = np.sin(x_label_0) + np.random.normal(0, 0.2, label_0_points)
+
+    # ラベル1の点を生成
+    label_1_points = num1
+    np.random.seed(seed = fseed)
+    x_label_1 = np.random.normal(0, 0.2, label_1_points)
+    np.random.seed(seed = fseed + 2)
+    y_label_1 = np.random.normal(0, 0.2, label_1_points)
+
+    # x座標とy座標を合わせる
+    data_label_0 = np.vstack((x_label_0, y_label_0)).T
+    data_label_1 = np.vstack((x_label_1, y_label_1)).T
+
+
+    target_data = data_label_1
+    all_data = np.vstack((data_label_0,data_label_1))
+    label = np.hstack((np.zeros(num0),np.ones(num1)))
+    return target_data, all_data, label, data_label_0, data_label_1
+
 def preprocess_adult():
     df = pd.read_csv('../data/adult_feature.csv')
     df=df.drop(columns=['Unnamed: 0'])

@@ -10,6 +10,7 @@ import heapq
 class FACE:
     def __init__(
             self,
+            clf,
             data: np.ndarray,
             radius: float,
             epsilon: float,
@@ -17,6 +18,7 @@ class FACE:
             td: float,
             ):
         self.data = data
+        self.clf = clf
         self.radius = radius
         self.epsilon = epsilon
         self.tp = tp
@@ -93,7 +95,7 @@ class FACE:
             [d, u] = heapq.heappop(L) #ヒープを使って起点を選ぶ
             if selected[u] is False:
                 selected[u]=True
-                for [w,l] in self.wN[u]:
+                for w, l in self.wN[u]:
                     if dist[w] > dist[u]+l:
                         pre[w] = u
                         dist[w] = dist[u]+l
