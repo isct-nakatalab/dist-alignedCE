@@ -37,7 +37,7 @@ def preprocess_artificial():
     return target_data, all_data, label, data_label_0, data_label_1
 
 def preprocess_adult():
-    df = pd.read_csv('../data/adult_feature.csv')
+    df = pd.read_csv('data/adult_feature.csv')
     df=df.drop(columns=['Unnamed: 0'])
     df = df.rename(columns = {'education-num' : 'edunum'})
     df = df.rename(columns = {'age' : 'aged'})
@@ -45,7 +45,7 @@ def preprocess_adult():
     Columns = list(df.columns)
     df = pd.get_dummies(df, drop_first=True)
     Dummies_Columns = list(df.columns)
-    df_label = pd.read_csv('../data/adult_label.csv')
+    df_label = pd.read_csv('data/adult_label.csv')
     df_label[df_label['income']=='<=50K']=0
     df_label[df_label['income']=='<=50K.']=0
     df_label[df_label['income']=='>50K']=1
@@ -59,7 +59,7 @@ def preprocess_adult():
     return all_data, label, Dummies_Columns, Columns, df_tentative
 
 def preprocess_bank():
-    df = pd.read_csv('../data/bank_feature.csv')
+    df = pd.read_csv('data/bank_feature.csv')
     df=df.drop(columns=['Unnamed: 0'])
     df = df.rename(columns = {'age' : 'aged'})
     df = df.rename(columns = {'day_of_week' : 'day-of-week'})
@@ -68,7 +68,7 @@ def preprocess_bank():
     Columns = list(df.columns)
     df = pd.get_dummies(df)
     Dummies_Columns = list(df.columns)
-    df_label = pd.read_csv('../data/bank_label.csv')
+    df_label = pd.read_csv('data/bank_label.csv')
     df_label = pd.get_dummies(df_label, drop_first=True)
     df_label = df_label['y_yes']
     scaler = StandardScaler()

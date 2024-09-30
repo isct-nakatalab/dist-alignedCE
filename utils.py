@@ -40,8 +40,33 @@ def worst_lof(pointlist, Alof, all_data):
     if pointlist is None:
         return 1
     for i in pointlist:
-        i_lof = Alof(i.reshape(1,-1))
+        i_lof = -Alof.score_samples(i.reshape(1,-1))
         if worstlof < i_lof:
             worstlof = i_lof
             worstpoint = i
     return worstlof,worstpoint
+
+class Valid_Flof:
+    def __init__(
+            self,
+            Flof,
+            ):
+        self.Flof = Flof
+
+    def lof_mean(self, lists):
+        tmp = []
+        for i in lists:
+            if isinstance(i, int):
+                continue
+            else:
+                tmp.append(-self.Flof.score_samples(i.reshape(1,-1)))
+        return np.mean(tmp)
+
+    def lof_std(self, lists):
+        tmp = []
+        for i in lists:
+            if isinstance(i, int):
+                continue
+            else:
+                tmp.append(-self.Flof.score_samples(i.reshape(1,-1)))
+        return np.std(tmp)

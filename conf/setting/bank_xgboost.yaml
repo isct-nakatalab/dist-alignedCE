@@ -1,0 +1,17 @@
+experience_param:
+  data_name: bank
+  model_name: xgboost
+  num_trial: 100
+
+alighedCE_param:
+  gamma: 0.50
+  eta: 0.050
+  beta: 0.2
+  lambdas: 1e-4
+  iteration: 1000
+
+FACE_param:
+  radius: 3.2
+  epsilon: 3.2
+  tp: 0.8
+  td: 1.5e-24
