@@ -1,8 +1,6 @@
-import sys
 import numpy as np
 import time
 from sklearn.neighbors import KernelDensity
-import time
 import math
 from sklearn.neighbors import RadiusNeighborsTransformer
 import heapq
@@ -130,7 +128,7 @@ class FACE:
                 min_path = closest_target_path
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"faceの処理時間: {elapsed_time}秒")
+        print(f"Processing time of FACE: {elapsed_time} second")
         return min_target, min_path_cost, min_path
 
 

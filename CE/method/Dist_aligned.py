@@ -1,12 +1,7 @@
-import sys
 import numpy as np
 import time
 from sklearn.linear_model import LogisticRegression
-import matplotlib.pyplot as plt
 from sklearn.neighbors import LocalOutlierFactor
-from sklearn.linear_model import LogisticRegression
-import time
-import math
 from tqdm import tqdm
 import copy
 
@@ -89,12 +84,12 @@ class DistAlighedCE:
                     pointlist.append(perturbation_vector)
 
             grad = self.calc_dist_grad(input, perturbation_vector) + self.calc_grad(perturbation_vector)
-            # #updata
+            #updata
             perturbation_vector += self.beta*grad
 
         end_time = time.time()
         elapsed_time = end_time - start_time
-        print(f"lofの処理時間: {elapsed_time}秒")
+        print(f"Processing time of Our method: {elapsed_time} second")
 
         return pointlist,perturbation_vector
 

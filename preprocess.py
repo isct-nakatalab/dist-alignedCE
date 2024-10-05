@@ -56,7 +56,7 @@ def preprocess_adult():
     standardized_data = scaler.fit_transform(df)
     all_data = np.array(standardized_data)
     label = np.array(df_label)
-    return all_data, label, Dummies_Columns, Columns, df_tentative
+    return all_data, label, Dummies_Columns, Columns, df_tentative, df_label
 
 def preprocess_bank():
     df = pd.read_csv('data/bank_feature.csv')
@@ -75,7 +75,7 @@ def preprocess_bank():
     standardized_data = scaler.fit_transform(df)
     all_data = np.array(standardized_data)
     label = np.array(df_label)
-    return all_data, label, Dummies_Columns, Columns, df_tentative
+    return all_data, label, Dummies_Columns, Columns, df_tentative, df_label
 
 
 def learn_logistic_regression(all_data, label):

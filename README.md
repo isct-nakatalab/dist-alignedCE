@@ -18,7 +18,7 @@ hogehoge
 ```
 
 ## Running the Code
-
+The experimental workflow is implemented using [Hydra](https://github.com/facebookresearch/hydra). The commands needed to reproduce the experiments are summarized below.
 
 ### Artificial data
 ```bash
