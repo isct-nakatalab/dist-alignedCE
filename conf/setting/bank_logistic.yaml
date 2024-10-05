@@ -1,0 +1,23 @@
+experience_param:
+  data_name: bank
+  model_name: logistic
+  num_trial: 100
+
+alighedCE_param:
+  gamma: 0.50
+  eta: 0.080
+  beta: 0.2
+  lambdas: 1e-4
+  iteration: 1000
+  activate_name: "normal"
+
+FACE_param:
+  radius: 3.2
+  epsilon: 3.2
+  tp: 0.8
+  td: 1.5e-24
+
+NICE_param:
+  cat_feat: [1,2,3,4,6,7,8,10,15]
+  num_feat: [0,5,9,11,12,13,14]
+  to_dum: ['job','marital','education', 'default', 'housing', 'loan','contact', 'month', 'poutcome']
