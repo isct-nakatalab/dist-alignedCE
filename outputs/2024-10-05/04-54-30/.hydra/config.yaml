@@ -1,0 +1,15 @@
+experience_param:
+  data_name: adult
+  model_name: xgboost
+  num_trial: 150
+alighedCE_param:
+  gamma: 1.0
+  eta: 0.1
+  beta: 0.2
+  lambdas: 0.0001
+  iteration: 1000
+FACE_param:
+  radius: 3.0
+  epsilon: 3.0
+  tp: 0.8
+  td: 1.5e-24
