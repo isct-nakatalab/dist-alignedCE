@@ -106,6 +106,7 @@ def main(cfg: DictConfig) -> None:
 
     face_worstlof_output = np.array(face_worstlof_output)
     lof_worstlof_output = np.array(lof_worstlof_output)
+    nice_worstlof_output = np.array(nice_worstlof_output)
     print('Worst Alof value of FACE output:',np.mean(face_worstlof_output),'+-',np.std(face_worstlof_output))
     print('Worst Alof value of NICE output:',np.mean(nice_worstlof_output),'+-',np.std(nice_worstlof_output))
     print('Worst Alof value of Our method output:',np.mean(lof_worstlof_output),'+-',np.std(lof_worstlof_output))
