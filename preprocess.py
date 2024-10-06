@@ -63,10 +63,10 @@ def preprocess_bank():
     df=df.drop(columns=['Unnamed: 0'])
     df = df.rename(columns = {'age' : 'aged'})
     df = df.rename(columns = {'day_of_week' : 'day-of-week'})
-    df = df.fillna('NaN')
+    # df = df.fillna('NaN')
     df_tentative = df
     Columns = list(df.columns)
-    df = pd.get_dummies(df)
+    df = pd.get_dummies(df, drop_first=True)
     Dummies_Columns = list(df.columns)
     df_label = pd.read_csv('data/bank_label.csv')
     df_label = pd.get_dummies(df_label, drop_first=True)
