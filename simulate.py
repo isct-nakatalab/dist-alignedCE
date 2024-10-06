@@ -25,8 +25,9 @@ def main(cfg: DictConfig) -> None:
     else:
         raise ValueError(f"Error: '{cfg.setting.experience_param.data_name}' is not a recognized name.")
 
+    all_datas = all_data[:len(all_data)//30]
     face = FACE(
-        data=all_data,
+        data=all_datas,
         clf=clf,radius=cfg.setting.FACE_param.radius,
         epsilon=cfg.setting.FACE_param.epsilon,
         tp=cfg.setting.FACE_param.tp,
@@ -68,7 +69,7 @@ def main(cfg: DictConfig) -> None:
     nice_output = []
     nice_worstlof_output = []
 
-    original_input_list, oriindex_list = original_make(get_candidates_bad(0.3, all_data, clf), num_trial, seed)
+    original_input_list, oriindex_list = original_make(get_candidates_bad(0.3, all_datas, clf), num_trial, seed)
 
     for i in tqdm(range(num_trial), desc="CE"):
 

@@ -34,6 +34,7 @@ class _NICE:
         self.scaler.fit(pd.get_dummies(df, drop_first=True))
         self.Dummies_Columns = Dummies_Columns
         self.Columns = Columns
+        self.to_dum = to_dum
         self.predict_fn = lambda x: self.clf_nice(x)
         self.X_train = self.df.values
         self.y_train = self.df_label.values
@@ -48,7 +49,6 @@ class _NICE:
             optimization = self.optimization,
             justified_cf=True
             )
-        self.to_dum = to_dum#= ['workclass','education','marital-status', 'occupation', 'relationship', 'race', 'sex', 'native-country']
 
     def inverse_standard(self, inputs): #Convert input to its pre-standardized state
         return np.round(inputs*self.scaler.scale_ + self.scaler.mean_).astype(int)
@@ -70,7 +70,7 @@ class _NICE:
 
         def reorganize_dict(reference_list, data_dict):
             for key, value_list in data_dict.items():
-                not_in_reference = [item for item in value_list if not any(item in ref for ref in reference_list)]
+                not_in_reference = [item for item in value_list if not any(((item in ref) and (key in ref)) for ref in reference_list)]
                 in_reference = [item for item in value_list if item not in not_in_reference]
                 data_dict[key] = not_in_reference + in_reference
             return data_dict
@@ -85,7 +85,7 @@ class _NICE:
                 cat_dummies = [f"{col}_{cat}" for cat in cats[1:]]
             else:
                 cat_dummies = [f"{col}_{cat}" for cat in cats]
-            inverse_df[col] = df_dummies[cat_dummies].idxmax(axis=1).str.replace(f'{col}_', '').values#ここ上手くいってない説
+            inverse_df[col] = df_dummies[cat_dummies].idxmax(axis=1).str.replace(f'{col}_', '').values
 
             if pd.isna(inverse_df[col]).any():
                 inverse_df[col] = cats[0]
@@ -102,13 +102,12 @@ class _NICE:
         N = len(inputs)
         inputs = pd.DataFrame(np.array(inputs), columns=self.Columns)
         df_tentatives = pd.concat([self.df,inputs])
-        to_dum = ['workclass','education','marital-status', 'occupation', 'relationship', 'race', 'sex', 'native-country']
-        inputs = pd.get_dummies(df_tentatives,columns=to_dum, drop_first=True).tail(N)
+        inputs = pd.get_dummies(df_tentatives, columns=self.to_dum, drop_first=True).tail(N)
         inputs = self.scaler.transform(inputs)
         inputs = np.array(inputs)
         return inputs
 
-    def clf_nice(self,inputs): #入力に対しての予測器に合うように変換
+    def clf_nice(self,inputs):
         inputs = self.keisan_all(inputs)
         pred = self.clf.predict_proba(inputs)
         pred = np.float64(pred)

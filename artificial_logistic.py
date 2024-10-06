@@ -21,7 +21,6 @@ def main():
     for i in range(len(pointlist)):
         pointlists_y_face.append(pointlist[i][1])
 
-    # プロット
     pointlists_x_graph_face = pointlists_x_face.copy()
     pointlists_x_graph_face.append(original_input[0][0])
     pointlists_x_graph_face.insert(0,perturbation_vector_face[0])
