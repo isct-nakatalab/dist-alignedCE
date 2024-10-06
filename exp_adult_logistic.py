@@ -53,7 +53,7 @@ def exp_adult_logistic_FACE():
         perturbation_vector, pathcost, path = face.compute_recourse(oriindex)
         if worst_lof(path, alighedCE.Alof, all_data) == 1:
             continue
-        validity_index.append(i) #解が得られた有効なindexを保持
+        validity_index.append(i)
         face_output.append(perturbation_vector)
         if not path:
             for j in range(1,10):

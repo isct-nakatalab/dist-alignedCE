@@ -90,14 +90,14 @@ class FACE:
         selected = [False]*n
 
         while len(L)>0:
-            [d, u] = heapq.heappop(L) #ヒープを使って起点を選ぶ
+            [d, u] = heapq.heappop(L)
             if selected[u] is False:
                 selected[u]=True
                 for w, l in self.wN[u]:
                     if dist[w] > dist[u]+l:
                         pre[w] = u
                         dist[w] = dist[u]+l
-                        heapq.heappush(L,[dist[w],w]) #訪問予定ヒープに[dist[w],w]を追加.
+                        heapq.heappush(L,[dist[w],w])
         k=target_id
         Rlist=[]
         while k!=sourse_id:

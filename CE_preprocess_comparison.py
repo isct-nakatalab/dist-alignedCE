@@ -23,7 +23,6 @@ def main(cfg: DictConfig) -> None:
     else:
         raise ValueError(f"Error: '{cfg.experience_param.data_name}' is not a recognized name.")
 
-    #%time
     num = 5
     all_all_data = all_data
     all_label = label

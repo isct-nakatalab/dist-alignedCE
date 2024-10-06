@@ -107,7 +107,7 @@ class _NICE:
         inputs = np.array(inputs)
         return inputs
 
-    def clf_nice(self,inputs): #入力に対しての予測器に合うように変換
+    def clf_nice(self,inputs):
         inputs = self.keisan_all(inputs)
         pred = self.clf.predict_proba(inputs)
         pred = np.float64(pred)
